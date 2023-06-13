@@ -1,2 +1,2 @@
 #!/bin/bashs
-tr -d "cC"
+tr -d "Cc"
