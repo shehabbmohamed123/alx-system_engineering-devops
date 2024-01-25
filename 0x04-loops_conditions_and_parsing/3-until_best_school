@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# displays Best School 10 times.
+# Displays Best School 10 times.
 
-COUNTER=10
-until [ $COUNTER -lt 1 ]
+i=10
+until [ "$i" -gt 10 ]
 do
     echo "Best School"
-    let COUNTER-=1
+    i=$(( i + 1 ))
 done
