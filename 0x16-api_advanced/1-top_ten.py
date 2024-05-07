@@ -1,22 +1,28 @@
-#!/usr/bin/python3
 
-import praw
+#!/usr/bin/python3
+"""
+queries the Reddit API and prints the titles of
+the first 10 hot posts listed for a given subreddit.
+"""
+import requests
+
 
 def top_ten(subreddit):
-    reddit = praw.Reddit(client_id='your_client_id',
-                         client_secret='your_client_secret',
-                         user_agent='your_user_agent')
+    """
+    prints the titles of the first 10 hot posts listed for
+    a given subreddit
+    """
+    url = ("https://api.reddit.com/r/{}?sort=hot&limit=10".format(subreddit))
+    headers = {'User-Agent': 'CustomClient/1.0'}
+    response = requests.get(url, headers=headers, allow_redirects=False)
 
-    try:
-        subreddit = reddit.subreddit(subreddit)
-        for submission in subreddit.hot(limit=10):
-            print(submission.title)
-    except praw.exceptions.InvalidSubreddit:
-        print("None")
+    if response.status_code != 200:
+        print(None)
+        return
+    response = response.json()
+    if 'data' in response:
+        for posts in response.get('data').get('children'):
+            print(posts.get('data').get('title'))
 
-if __name__ == '__main__':
-    import sys
-    if len(sys.argv) < 2:
-        print("Please pass an argument for the subreddit to search.")
     else:
-        top_ten(sys.argv[1])
+        print(None)
